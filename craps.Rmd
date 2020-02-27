@@ -65,6 +65,14 @@ x %>%
 # Assume that John Mark is honest. Yeah! How surprising is it to roll 6 winners?
 # How unusual is it to win against Ishan 4 to 0?
 
+w <- tibble(results = map_int(1:6, ~ roll_two_dice()),
+            results2 = map_int(1:6, ~ roll_two_dice())) %>%
+  mutate(p1_craps = results %in% c(7,11)) %>%
+  mutate(p2_craps = results2 %in% c(7,11)) %>%
+  mutate(winner = ifelse(results %in% c(7,11) & results2 %in% c(7,11), "Tie", "Both lost")) %>%
+  mutate(winner = ifelse(p1_craps & !p2_craps, "P1", winner)) %>%
+  mutate(winner = ifelse(p2_craps & !p1_craps, "P2", winner))
+  
+
 
 ```
-
